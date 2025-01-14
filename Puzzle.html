@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fruit Crush</title>
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(8, 50px);
+            grid-gap: 5px;
+        }
+
+        .fruit {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-container" id="gameBoard"></div>
+
+    <script>
+        const fruits = ['🍎', '🍌', '🍊', '🍇', '🍓', '🍒'];
+        const gridSize = 8;
+        let gameBoard = [];
+
+        function createGameBoard() {
+            const gameBoardContainer = document.getElementById('gameBoard');
+            gameBoard = [];
+
+            for (let row = 0; row < gridSize; row++) {
+                const rowArray = [];
+                for (let col = 0; col < gridSize; col++) {
+                    const fruit = fruits[Math.floor(Math.random() * fruits.length)];
+                    const fruitElement = document.createElement('div');
+                    fruitElement.classList.add('fruit');
+                    fruitElement.textContent = fruit;
+                    fruitElement.setAttribute('data-row', row);
+                    fruitElement.setAttribute('data-col', col);
+                    gameBoardContainer.appendChild(fruitElement);
+                    rowArray.push(fruit);
+                }
+                gameBoard.push(rowArray);
+            }
+        }
+
+        function checkMatches() {
+            // Implement match-3 logic here
+            // Check for horizontal matches
+            for (let row = 0; row < gridSize; row++) {
+                for (let col = 0; col < gridSize - 2; col++) {
+                    if (gameBoard[row][col] === gameBoard[row][col + 1] &&
+                        gameBoard[row][col] === gameBoard[row][col + 2]) {
+                        // Handle match found (e.g., remove fruits, add points)
+                    }
+                }
+            }
+
+            // Check for vertical matches
+            for (let row = 0; row < gridSize - 2; row++) {
+                for (let col = 0; col < gridSize; col++) {
+                    if (gameBoard[row][col] === gameBoard[row + 1][col] &&
+                        gameBoard[row][col] === gameBoard[row + 2][col]) {
+                        // Handle match found (e.g., remove fruits, add points)
+                    }
+                }
+            }
+        }
+
+        function swapFruits(row1, col1, row2, col2) {
+            // Swap fruits in the game board array
+            [gameBoard[row1][col1], gameBoard[row2][col2]] = [gameBoard[row2][col2], gameBoard[row1][col1]];
+
+            // Update the visual representation
+            const fruit1 = document.querySelector(`[data-row="${row1}"][data-col="${col1}"]`);
+            const fruit2 = document.querySelector(`[data-row="${row2}"][data-col="${col2}"]`);
+            [fruit1.textContent, fruit2.textContent] = [fruit2.textContent, fruit1.textContent];
+        }
+
+        // Add event listeners for fruit swapping
+        document.addEventListener('click', (event) => {
+            if (event.target.classList.contains('fruit')) {
+                // Handle fruit clicks and swapping logic here
+            }
+        });
+
+        createGameBoard();
+        checkMatches(); 
+    </script>
+</body>
+</html>
